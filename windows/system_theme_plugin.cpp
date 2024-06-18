@@ -10,6 +10,9 @@
 
 #include <mutex>
 
+// https://stackoverflow.com/a/78599923
+#define _DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR
+
 flutter::EncodableMap getRGBA(windows10colors::RGBA _color)
 {
     /* Converts windows10colors::RGBA to Flutter readable map of following structure.
