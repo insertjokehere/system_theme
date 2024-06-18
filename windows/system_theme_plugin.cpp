@@ -1,4 +1,5 @@
 #include <map>
+#include <winrt>
 
 #include "include/system_theme/system_theme_plugin.h"
 #include <flutter/method_channel.h>
@@ -51,12 +52,14 @@ namespace
     protected:
         std::unique_ptr<flutter::StreamHandlerError<T>> OnListenInternal(const T *arguments, std::unique_ptr<flutter::EventSink<T>> &&events) override
         {
+            OutputDebugString(L"System Theme Plugin - OnListenInternal");
             std::unique_lock<std::mutex> _ul(m_mtx);
             m_sink = std::move(events);
             return nullptr;
         }
         std::unique_ptr<flutter::StreamHandlerError<T>> OnCancelInternal(const T *arguments) override
         {
+            OutputDebugString(L"System Theme Plugin - OnCancelInternal");
             std::unique_lock<std::mutex> _ul(m_mtx);
             m_sink.release();
             return nullptr;
@@ -130,6 +133,7 @@ namespace
 
     SystemThemePlugin::~SystemThemePlugin()
     {
+        OutputDebugString(L"System Theme Plugin - destructor");
         registrar->UnregisterTopLevelWindowProcDelegate(window_proc_id);
     }
 
@@ -189,6 +193,8 @@ namespace
 
     void SystemThemePlugin::HandleMethodCall(const flutter::MethodCall<flutter::EncodableValue> &method_call, std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result)
     {
+        OutputDebugString(L"System theme plugin HandleMethodCall");
+        OutputDebugString(to_hstring(method_call.method_name()));
         if (method_call.method_name() == "SystemTheme.accentColor")
         {
             result->Success(flutter::EncodableValue(getAccentColor()));
