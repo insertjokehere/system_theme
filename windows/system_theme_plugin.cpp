@@ -1,5 +1,4 @@
 #include <map>
-#include <winrt>
 
 #include "include/system_theme/system_theme_plugin.h"
 #include <flutter/method_channel.h>
@@ -194,7 +193,9 @@ namespace
     void SystemThemePlugin::HandleMethodCall(const flutter::MethodCall<flutter::EncodableValue> &method_call, std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result)
     {
         OutputDebugString(L"System theme plugin HandleMethodCall");
-        OutputDebugString(to_hstring(method_call.method_name()));
+        std::string method_name = method_call.method_name();
+        std::wstring temp = std::wstring(method_name.begin(), method_name.end());
+        OutputDebugString(temp.c_str());
         if (method_call.method_name() == "SystemTheme.accentColor")
         {
             result->Success(flutter::EncodableValue(getAccentColor()));
